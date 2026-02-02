@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+<h1>Login</h1>
+<form id="userForm">
+    Name: <input type="text" id="username" required><br><br>
+    Passwort: <input type="text" id="pass" required><br><br>
+    <button type="submit">Login</button>
+    <text id="login_message"></text>
+</form>
+
+
+<button onclick="laden()">Load</button>
+<script>
+    document.getElementById("userForm").addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        const user_name = document.getElementById("username").value;
+        const password = document.getElementById("pass").value;
+
+        const user = {user_name, password};
+
+        try {
+            const response = await fetch("/api/login", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(user)
+            });
+
+            const data = await response.json();
+            if (data.success) {
+                window.location.href = "/success.html"
+            } else {
+                const errMsg = document.getElementById("login_message")
+                errMsg.innerText = "Fehler beim Login";
+            }
+        } catch (e) {
+
+            console.error(e)
+        }
+    });
+</script>
+</body>
+</html>
