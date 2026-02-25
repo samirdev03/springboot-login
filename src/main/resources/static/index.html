@@ -1,21 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Login</title>
+    <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-<h1>Login</h1>
-<form id="userForm">
-    Name: <input type="text" id="username" required><br><br>
-    Passwort: <input type="text" id="pass" required><br><br>
-    <button type="submit">Login</button>
-    <text id="login_message"></text>
-</form>
+<main class="card">
+    <h1>Willkommen zurück</h1>
+    <p class="subtitle">Bitte melde dich mit deinem Benutzernamen und Passwort an.</p>
 
+    <form id="userForm" class="form-grid">
+        <div>
+            <label for="username">Name</label>
+            <input type="text" id="username" required>
+        </div>
+        <div>
+            <label for="pass">Passwort</label>
+            <input type="password" id="pass" required>
+        </div>
 
-<button onclick="laden()">Load</button>
+        <div class="btn-row">
+            <button class="btn-primary" type="submit">Login</button>
+            <button class="btn-secondary" type="button" onclick="laden()">Load</button>
+        </div>
+        <span id="login_message" class="message" aria-live="polite"></span>
+    </form>
+</main>
+
 <script>
+    function laden() {
+        const info = document.getElementById("login_message");
+        info.innerText = "Daten werden vorbereitet …";
+    }
+
     document.getElementById("userForm").addEventListener("submit", async function(event) {
         event.preventDefault();
 
@@ -33,14 +52,14 @@
 
             const data = await response.json();
             if (data.success) {
-                window.location.href = "/success.html"
+                window.location.href = "/success.html";
             } else {
-                const errMsg = document.getElementById("login_message")
+                const errMsg = document.getElementById("login_message");
                 errMsg.innerText = "Fehler beim Login";
             }
         } catch (e) {
-
-            console.error(e)
+            console.error(e);
+            document.getElementById("login_message").innerText = "Verbindungsfehler. Bitte später erneut versuchen.";
         }
     });
 </script>
